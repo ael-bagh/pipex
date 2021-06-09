@@ -6,11 +6,17 @@
 /*   By: ael-bagh <ael-bagh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 15:28:10 by ael-bagh          #+#    #+#             */
-/*   Updated: 2021/06/09 15:07:12 by ael-bagh         ###   ########.fr       */
+/*   Updated: 2021/06/09 18:04:00 by ael-bagh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+void	init(int *k, int *i)
+{
+	*k = -1;
+	*i = 0;
+}
 
 char	*ft_strdup(const char *s1)
 {

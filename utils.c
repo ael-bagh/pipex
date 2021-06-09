@@ -6,11 +6,32 @@
 /*   By: ael-bagh <ael-bagh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 15:32:59 by ael-bagh          #+#    #+#             */
-/*   Updated: 2021/06/09 15:33:31 by ael-bagh         ###   ########.fr       */
+/*   Updated: 2021/06/09 19:01:15 by ael-bagh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+int	arg_error(t_cmd cmd[2])
+{
+	if (cmd[1].cmd_abs_path == NULL && cmd[0].cmd_abs_path == NULL)
+	{
+		printf("bash: %s: command not found\n", cmd[0].cmd_w_args[0]);
+		printf("bash: %s: command not found\n", cmd[1].cmd_w_args[0]);
+		return (1);
+	}
+	if (cmd[0].cmd_abs_path == NULL)
+	{
+		printf("bash: %s: command not found\n", cmd[0].cmd_w_args[0]);
+		return (1);
+	}
+	if (cmd[1].cmd_abs_path == NULL)
+	{
+		printf("bash: %s: command not found\n", cmd[1].cmd_w_args[0]);
+		return (1);
+	}
+	return (0);
+}
 
 void	free_the_nipples(char **s)
 {

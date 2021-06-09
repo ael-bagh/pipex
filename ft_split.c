@@ -6,7 +6,7 @@
 /*   By: ael-bagh <ael-bagh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 15:27:31 by ael-bagh          #+#    #+#             */
-/*   Updated: 2021/06/09 14:49:22 by ael-bagh         ###   ########.fr       */
+/*   Updated: 2021/06/09 18:14:05 by ael-bagh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,27 +73,27 @@ static int	len_str(char const *s, int i, char c)
 char	**ft_split(char const *s, char c)
 {
 	char	**cpy;
-	int		len;
 	int		k;
 	int		i;
-	int		start;
+	t_plit	ugh;
 
-	k = -1;
-	i = 0;
+	init(&k, &i);
 	cpy = (char **)malloc(sizeof(char *) * (c_w(s, c) + 1));
 	if (!s || !cpy)
 		return (0);
 	while (s[i])
 	{
-		len = 0;
+		ugh.len = 0;
 		i += s_p(&s[i], c);
-		start = i;
-		len = len_str(s, i, c);
-		i += len;
-		cpy[++k] = ft_substr(s, start, len);
-		if (len)
+		ugh.start = i;
+		ugh.len = len_str(s, i, c);
+		i += ugh.len;
+		if (ugh.len)
+		{
+			cpy[++k] = ft_substr(s, ugh.start, ugh.len);
 			if (!(cpy[k]))
 				return (freethenipples(cpy));
+		}
 	}
 	cpy[++k] = 0;
 	return (cpy);

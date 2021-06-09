@@ -6,11 +6,17 @@
 /*   By: ael-bagh <ael-bagh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/08 09:59:21 by ael-bagh          #+#    #+#             */
-/*   Updated: 2021/06/09 15:53:34 by ael-bagh         ###   ########.fr       */
+/*   Updated: 2021/06/09 18:59:53 by ael-bagh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+char	*for_norm(char *cmd, int ret)
+{
+	close(ret);
+	return (cmd);
+}
 
 char	*find_path(char *path, char *cmd)
 {
@@ -41,22 +47,30 @@ char	*find_path(char *path, char *cmd)
 	return (NULL);
 }
 
+char	*cmd_finder(char *env, char *cmd, int ret)
+{
+	char	*cmd_path;
+	char	*path;
+
+	cmd_path = NULL;
+	path = ft_substr(env, c_finder(env, '=') + 1,
+			ft_strlen(env));
+	cmd_path = find_path(path, cmd);
+	free(path);
+	close(ret);
+	return (cmd_path);
+}
+
 char	*get_abs_path(char *cmd, char **envp)
 {
 	int		i;
 	char	*tmp;
-	char	*path;
-	char	*cmd_path;
 	int		ret;
 
 	i = -1;
-	cmd_path = NULL;
 	ret = open(cmd, O_RDONLY);
 	if (ret > 0)
-	{
-		close(ret);
-		return (cmd);
-	}
+		return (for_norm(cmd, ret));
 	else
 	{
 		while (envp[++i])
@@ -64,15 +78,9 @@ char	*get_abs_path(char *cmd, char **envp)
 			tmp = ft_substr(envp[i], 0, c_finder(envp[i], '='));
 			if (ft_strcmp(tmp, "PATH"))
 			{
-				path = ft_substr(envp[i], c_finder(envp[i], '=') + 1,
-						ft_strlen(envp[i]));
-				cmd_path = find_path(path, cmd);
-				free(path);
 				free(tmp);
-				close(ret);
-				return (cmd_path);
+				return (cmd_finder(envp[i], cmd, ret));
 			}
-			free(cmd_path);
 			free(tmp);
 		}
 		close(ret);
@@ -97,14 +105,10 @@ int	main(int argc, char **argv, char **envp)
 	cmd[0].cmd_abs_path = get_abs_path(cmd[0].cmd_w_args[0], envp);
 	cmd[1].cmd_w_args = ft_split(argv[3], ' ');
 	cmd[1].cmd_abs_path = get_abs_path(cmd[1].cmd_w_args[0], envp);
-	if (cmd[0].cmd_abs_path == NULL)
+	if (arg_error(cmd))
 	{
-		printf("bash: %s: command 1 not found\n", cmd[0].cmd_w_args[0]);
-		return (1);
-	}
-	if (cmd[1].cmd_abs_path == NULL)
-	{
-		printf("bash: %s: command 2 not found\n", cmd[1].cmd_w_args[0]);
+		open(outfile, O_CREAT | O_TRUNC | O_WRONLY, S_IWUSR | S_IRUSR
+			| S_IWGRP | S_IRGRP | S_IWOTH | S_IROTH);
 		return (1);
 	}
 	execute_it(cmd, infile, outfile, envp);
