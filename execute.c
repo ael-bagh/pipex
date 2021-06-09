@@ -6,7 +6,7 @@
 /*   By: ael-bagh <ael-bagh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 10:52:22 by ael-bagh          #+#    #+#             */
-/*   Updated: 2021/06/09 18:17:36 by ael-bagh         ###   ########.fr       */
+/*   Updated: 2021/06/09 19:12:53 by ael-bagh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ void	execute_it(t_cmd cmd[2], char *infile, char *outfile, char **envp)
 	in = open(infile, O_RDONLY);
 	if (in < 0)
 	{
+		open(outfile, O_CREAT | O_TRUNC | O_WRONLY, S_IWUSR | S_IRUSR
+			| S_IWGRP | S_IRGRP | S_IWOTH | S_IROTH);
 		perror(strerror(errno));
 		exit(errno);
 	}
